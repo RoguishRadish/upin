@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.goods.GoodsDao">
+	<resultMap id="BaseResult" type="com.entity.goods.Goods" ><!-- 
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="picId" property="picId" jdbcType="VARCHAR" />
+		<result column="picIds" property="picIds" jdbcType="VARCHAR" />
+		<result column="videoUrl" property="videoUrl" jdbcType="VARCHAR" />
+		<result column="detail" property="detail" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="VARCHAR" />
+		<result column="isUpon" property="isUpon" jdbcType="VARCHAR" /> -->
+	</resultMap>
+
+	<!-- 查询 -->
+	<select id="getGoodsList" parameterType="java.util.Map" resultType="Map">
+        SELECT
+            g.id, g.`name`, g.picId, g.picIds, g.videoUrl, g.detail, g.`status`,
+            g.price, qgs.type, qgs.value, p.picUrl
+        FROM q_goods_show qgs
+        LEFT JOIN q_goods g ON g.id = qgs.id
+        LEFT JOIN q_picture_url AS p ON g.picId = p.id
+        WHERE 1 = 1 
+            AND qgs.type = #{type}
+        ORDER BY qgs.value asc
+        <if test="pageNum != null and pageNum !='' and pageSize != null and pageSize !=''">
+            LIMIT #{pageNum},#{pageSize}
+        </if>
+    </select>
+	
+	<!-- 根据id查询 -->
+	<select id="getOneById" parameterType="java.util.Map" resultType="hashmap">
+        SELECT
+            g.id, g.`name`, g.picId, g.picIds, g.videoUrl, g.detail, g.`status`,
+            g.price, p.picUrl
+        FROM
+            q_goods AS g
+        LEFT JOIN q_picture_url AS p ON g.picId = p.id
+        WHERE 1 = 1 
+            AND g.id = #{goodsId}
+    </select>
+    
+	<!-- 查询商品图片路径 -->
+	<select id="getPicUrls" parameterType="java.util.Map" resultType="hashmap">
+        SELECT
+		  p.id,
+		  p.picUrl
+		FROM
+		  q_picture_url AS p
+        WHERE 1 = 1 
+            AND p.id IN
+	        <foreach collection="picIds" item="trans" index="index" open="(" close=")" separator=",">
+                #{trans}
+	        </foreach>
+    </select>
+</mapper>

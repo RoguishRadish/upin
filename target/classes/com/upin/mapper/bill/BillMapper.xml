@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.manager.base.dao.BillBaseMapper">
+	<resultMap id="BaseResultMap" type="cn.manager.base.bean.BillBase" >
+		<id column="BillId" property="billId" jdbcType="VARCHAR" />
+		<result column="UserId" property="userId" jdbcType="VARCHAR" />
+		<result column="BillType" property="billType" jdbcType="VARCHAR" />
+		<result column="BillMoney" property="billMoney" jdbcType="VARCHAR" />
+		<result column="ToUserId" property="toUserId" jdbcType="VARCHAR" />
+		<result column="CreateTime" property="createTime" jdbcType="VARCHAR" />
+		<result column="BillState" property="billState" jdbcType="VARCHAR" />
+		<result column="OrderId" property="orderId" jdbcType="VARCHAR" />
+		<result column="TaskId" property="taskId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 新增 -->	
+	<insert id="insertBillBase" parameterType="cn.manager.base.bean.BillBase">
+		insert into bill (
+			BillId,
+			UserId,
+			BillType,
+			BillMoney,
+			ToUserId,
+			CreateTime,
+			BillState,
+			OrderId,
+			TaskId
+			)
+		values(
+			#{billId},
+			#{userId},
+			#{billType},
+			#{billMoney},
+			#{toUserId},
+			#{createTime},
+			#{billState},
+			#{orderId},
+			#{taskId}
+			)
+	</insert>
+	
+	<!-- 根据账单Id查寻账单 -->
+	<select id="queryBillByBillId"  parameterType="java.util.Map" resultType="hashmap">
+		SELECT
+			BillId,
+			UserId,
+			BillType,
+			BillMoney,
+			ToUserId,
+			CreateTime,
+			BillState,
+			OrderId
+		FROM
+			bill
+		WHERE
+			BillId = #{billId}
+	</select>
+	<!-- 查询全部 -->
+	<select id="queryBillBase"  parameterType="java.util.Map" resultType="hashmap">
+		SELECT
+			BillId,
+			UserId,
+			BillType,
+			BillMoney,
+			ToUserId,
+			CreateTime,
+			BillState,
+			OrderId
+		FROM
+			bill
+	</select>
+	
+	<!-- 根据用户查询账单 or -->
+	<select id="queryBillByUserId"  parameterType="java.util.Map" resultType="hashmap">
+		SELECT
+			b.BillId,
+			b.UserId,
+			b.BillType,
+			b.BillMoney,
+			b.ToUserId,
+			b.CreateTime,
+			b.BillState,
+			b.OrderId,
+			u.NickName userNickName,
+			u.UserPic userPic,
+			us.NickName toUserNickName,
+			us.UserPic toUserPic,
+			o.ServiceId,
+			o.BuyerId,
+			o.IsAllowChanged,
+			o.RecAddrId,
+			o.OrderState,
+			o.Commission,
+			o.ManYunTip,
+			o.Prepay,
+			o.Remark,
+			o.CreateTime oCreateTime,
+			o.UpdateTime,
+			o.RefuseReasonId,
+			o.Score,
+			o.Evaluate
+		FROM
+			bill b
+		LEFT JOIN ks_user u ON b.UserId = u.UserId
+		LEFT JOIN ks_user us ON b.ToUserId = us.UserId
+		LEFT JOIN orders o ON b.OrderId = o.OrderId
+		WHERE
+			b.UserId = #{userId} or b.ToUserId = #{userId}
+			<if test="billState != null and BillState != ''" >
+      			and b.BillState = #{billState}
+   			</if>
+		ORDER BY b.BillId DESC
+  		LIMIT #{pageNum},#{pageSize}
+	</select>
+	
+
+<!-- 根据任务查询账单信息 -->
+	<select id="queryBillByTask"  parameterType="java.util.Map" resultType="hashmap">
+		SELECT
+			BillId,
+			UserId,
+			BillType,
+			BillMoney,
+			ToUserId,
+			CreateTime,
+			BillState,
+			TaskId
+		FROM
+			bill
+		WHERE
+			<if test="taskId != null and taskId != ''" >
+      			TaskId = #{taskId}
+   			</if>
+	</select>
+
+	<!-- 根据订单或账单查询账单信息 -->
+	<select id="queryBillByOrderOrBill"  parameterType="java.util.Map" resultType="hashmap">
+		SELECT
+			b.BillId,
+			b.UserId,
+			b.BillType,
+			b.BillMoney,
+			b.ToUserId,
+			b.CreateTime,
+			b.BillState,
+			b.OrderId,
+			u.NickName nickName,
+			u.UserPic userPic,
+			u.PhoneNum phoneNum,
+			u.OpenId userOpenId,
+			us.NickName toNickName,
+			us.UserPic toUserPic,
+			us.PhoneNum toPhoneNum,
+			us.OpenId toUserOpenId,
+			o.ServiceId,
+			o.BuyerId,
+			o.IsAllowChanged,
+			o.RecAddrId,
+			o.OrderState,
+			o.Commission,
+			o.Prepay,
+			o.Remark,
+			o.CreateTime oCreateTime,
+			o.UpdateTime,
+			o.RefuseReasonId,
+			o.Score,
+			o.Evaluate,
+			p.PlaceName
+		FROM
+			bill b
+		LEFT JOIN ks_user u ON b.UserId = u.UserId
+		LEFT JOIN ks_user us ON b.ToUserId = us.UserId
+		LEFT JOIN orders o ON b.OrderId = o.OrderId
+		LEFT JOIN receive_address ra ON o.RecAddrId = ra.Id 
+		LEFT JOIN place p ON ra.PlaceId= p.PlaceId
+		where 1 = 1
+			<if test="orderId != null and orderId != ''" >
+      			and b.OrderId = #{orderId}
+   			</if>
+   			<if test="billId != null and billId != ''" >
+      			and b.BillId = #{billId}
+   			</if>
+   			<if test="billState != null and billState != ''" >
+      			and b.BillState = #{billState}
+   			</if>
+   			<if test="billType != null and billType != ''" >
+      			and b.BillType = #{billType}
+   			</if>
+	</select>
+
+	<!-- 查询认证付款账单-->
+	<select id="queryBillByStateAndType"  parameterType="java.util.Map" resultType="hashmap">
+		SELECT
+			b.BillId billId, 
+			b.UserId userId,
+			b.BillType billType,
+			b.BillMoney billMoney,
+			b.ToUserId toUserId,
+			b.CreateTime createTime,
+			b.BillState billState,
+			b.OrderId orderId
+		FROM
+			bill b
+		where 1 = 1
+   			<if test="userId != null and userId != ''" >
+      			and b.UserId = #{userId}
+   			</if>
+   			<if test="billState != null and billState != ''" >
+      			and b.BillState = #{billState}
+   			</if>
+   			<if test="billType != null and billType != ''" >
+      			and b.BillType = #{billType}
+   			</if>
+	</select>
+
+	<!-- 更新账单 -->
+	<update id="updateBillByBillId" parameterType="cn.manager.base.bean.BillBase">
+	    update 
+	    	bill
+	    <set>
+	    	<if test="userId != null" >
+        		UserId = #{userId},
+      		</if>
+      		<if test="billType != null" >
+        		BillType = #{billType},
+      		</if>
+      		<if test="billMoney != null" >
+        		BillMoney = #{billMoney},
+      		</if>
+      		<if test="toUserId != null" >
+        		ToUserId = #{toUserId},
+      		</if>
+      		<if test="createTime != null" >
+        		CreateTime = #{createTime},
+      		</if>
+      		<if test="billState != null" >
+        		BillState = #{billState},
+      		</if>
+      		<if test="orderId != null" >
+        		OrderId = #{orderId}
+      		</if>
+	    </set>
+	    where 
+	    	BillId = #{billId}
+  	</update>
+	
+	<!-- 根据订单id和账单类型 查询 另预付款账单的预付款金额 -->
+	<select id="queryBillByOrderIdAndType"  parameterType="java.util.Map" resultType="hashmap">
+		SELECT
+			a.BillId,
+			a.UserId,
+			a.BillType,
+			a.BillMoney,
+			a.ToUserId,
+			a.CreateTime,
+			a.BillState,
+			a.OrderId
+		FROM
+			bill a
+		WHERE 1 = 1
+			<if test="billType != null and billType != ''" >
+        		and a.BillType =  #{billType}
+      		</if>
+      		<if test="orderId != null and orderId != ''" >
+        		and a.OrderId =  #{orderId}
+      		</if>
+	</select>
+</mapper>

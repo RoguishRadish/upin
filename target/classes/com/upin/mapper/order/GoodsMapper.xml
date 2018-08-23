@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.order.OrderDao">
+	<resultMap id="BaseResult" type="com.entity.order.Order" ><!-- 
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="picId" property="picId" jdbcType="VARCHAR" />
+		<result column="picIds" property="picIds" jdbcType="VARCHAR" />
+		<result column="videoUrl" property="videoUrl" jdbcType="VARCHAR" />
+		<result column="detail" property="detail" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="VARCHAR" />
+		<result column="isUpon" property="isUpon" jdbcType="VARCHAR" /> -->
+	</resultMap>
+
+	<!-- 查询 -->
+	<select id="getOrderList" parameterType="java.util.Map" resultType="hashmap">
+        SELECT
+            id, userId, goodsId, goodsName, goodsNum, addressId, userName, phone, address,
+            status, createTime, updateTime,
+        FROM q_order o
+        WHERE 1 = 1 
+            AND o.status = #{status}
+        ORDER BY o.updateTime desc
+        <if test="pageNum != null and pageNum !='' and pageSize != null and pageSize !=''">
+            LIMIT #{pageNum}, #{pageSize}
+        </if>
+    </select>
+	
+	<!-- 根据id查询 -->
+	<select id="getOneById" parameterType="String" resultType="BaseResult">
+        SELECT
+            id, userId, goodsId, goodsName, goodsNum, addressId, userName, phone, address,
+            status, createTime, updateTime,
+        FROM q_order o
+        WHERE 1 = 1 
+            AND o.id = #{orderId}
+    </select>
+</mapper>

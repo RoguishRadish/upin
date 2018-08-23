@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.token.AccessTokenMapper">
+	<resultMap id="BaseResult" type="com.entity.token.AccessToken" >
+		<id column="Id" property="id" jdbcType="VARCHAR" />
+		<result column="TOKEN" property="token" jdbcType="VARCHAR" />
+		<result column="LAST_TIME" property="lastTime" jdbcType="VARCHAR" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 新增 -->	
+	<insert id="insert" parameterType="com.entity.token.AccessToken">
+		insert into wx_access_token (
+			Id,
+			TOKEN,
+			LAST_TIME,
+			UPDATE_TIME
+			)
+		values(
+			#{id},
+			#{token},
+			#{lastTime},
+			#{updateTime}
+			)
+	</insert>
+	
+	<!-- 查询 -->
+	<select id="getOne" parameterType="BaseResult" resultType="com.entity.token.AccessToken">
+		SELECT
+			Id,
+			TOKEN,
+			LAST_TIME,
+			UPDATE_TIME
+		FROM
+			wx_access_token
+	</select>
+	
+	<!-- 更新 -->
+	<update id="update" parameterType="com.entity.token.AccessToken">
+	    update 
+	    	wx_access_token
+	    <set>
+	    	<if test="id != null" >
+        		Id = #{id},
+      		</if>
+      		<if test="token != null" >
+        		TOKEN = #{token},
+      		</if>
+      		<if test="lastTime != null" >
+        		LAST_TIME = #{lastTime},
+      		</if>
+      		<if test="updateTime != null" >
+        		UPDATE_TIME = #{updateTime},
+      		</if>
+	    </set>
+	    where 
+	    	Id = #{id}
+  	</update>
+  	
+</mapper>
