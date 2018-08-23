@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSONObject;
 import com.common.constant.Const;
-import com.common.constant.MsgConst;
 import com.upin.constants.Constants;
+import com.upin.constants.MsgConst;
 import com.upin.service.goods.GoodsService;
 
 @Controller  

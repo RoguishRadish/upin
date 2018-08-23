@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSONObject;
 import com.common.constant.Const;
-import com.common.constant.MsgConst;
 import com.common.utils.DateUtil;
 import com.common.utils.GeneratID;
 import com.upin.entity.order.Order;
 import com.upin.constants.Constants;
+import com.upin.constants.MsgConst;
 import com.upin.service.order.OrderService;
 
 @Controller  

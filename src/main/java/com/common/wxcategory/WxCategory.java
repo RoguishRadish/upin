@@ -1,8 +1,5 @@
 package com.common.wxcategory;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -12,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSONObject;
-import com.common.constant.MsgConst;
 import com.common.utils.LoadProperties;
+import com.upin.constants.MsgConst;
 import com.upin.entity.token.AccessToken;
 
 /**
@@ -34,13 +31,12 @@ public class WxCategory {
      * @param code 识别得到openId必须的一个值  
 	 * @return openId
 	 */
-    public static Map<String, String> getOpenId(String code) {  
+    public static String getOpenId(String code) {
+    	String openId = "";
         String openUrl = WxConst.openUrl;//获取openId的URL
-        
         openUrl = openUrl +"?appid="+ APP_ID +"&secret="+ APPSECRET +"&grant_type=authorization_code&js_code="+ code;
 
         HttpClient client = null;  
-        Map<String,String> result =new HashMap<String,String>();  
         try {     
             client = new DefaultHttpClient();  
             HttpGet httpget = new HttpGet(openUrl);  
@@ -48,16 +44,15 @@ public class WxCategory {
             String response = client.execute(httpget, responseHandler);  
             JSONObject openIdJSON = JSONObject.parseObject(response);  
             //openIdJSON可以得到的内容：access_token expires_in  refresh_token openid scope   
-            String openId = String.valueOf(openIdJSON.get("openid"));  //openId
-            result.put("openId", openId);
-            logger.info("openid" + MsgConst.GET_SUCCEED);
+            openId = String.valueOf(openIdJSON.get("openid"));  //openId
+            logger.info("openid获取成功");
         } catch (Exception e) {
-        	logger.error("openid" + MsgConst.GET_FAILED);
+        	logger.error("openid获取失败");
             e.printStackTrace();
         } finally {  
             client.getConnectionManager().shutdown();  
         }  
-        return result;  
+        return openId;  
     }  
     
     /**
