@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.upin.dao.wxuser.WXUserDao">
+	<resultMap id="base" type="WXUser"></resultMap>
+    <select id="getOneById" resultMap="base" parameterType="String">
+        SELECT
+			u.id, u.nickName, u.userPic, u.openId, u.userName, u.sex, u.identityNum, u.phone, u.email,
+			u.money, u.firstLoginTime, u.lastLoginTime, u.loginNum, u.createTime, u.updateTime
+			FROM
+			q_user AS u
+        WHERE 1 = 1 
+            AND u.id = #{id}
+    </select>
+    <select id="getOneByOpenId" resultMap="base" parameterType="String">
+        SELECT
+			u.id, u.nickName, u.userPic, u.openId, u.userName, u.sex, u.identityNum, u.phone, u.email,
+			u.money, u.firstLoginTime, u.lastLoginTime, u.loginNum, u.createTime, u.updateTime
+			FROM
+			q_user AS u
+        WHERE 1 = 1 
+            AND u.openId = #{openId}
+    </select>
+    <insert id="insert"  parameterType="WXUser">    
+        INSERT INTO q_user
+           (`id`,
+             `nickName`,
+             `userPic`,
+             `openId`,
+             `userName`,
+             `sex`,
+             `identityNum`,
+             `phone`,
+             `email`,
+             `money`,
+             `firstLoginTime`,
+             `lastLoginTime`,
+             `loginNum`,
+             `createTime`,
+             `updateTime`)
+        VALUES (#{id},
+            #{nickName},
+            #{userPic},
+            #{openId},
+            #{userName},
+            #{sex},
+            #{identityNum},
+            #{phone},
+            #{email},
+            #{money},
+            #{firstLoginTime},
+            #{lastLoginTime},
+            #{loginNum},
+            #{createTime},
+            #{updateTime});
+    </insert>
+    <update id="update" parameterType="WXUser">
+        UPDATE `oa_apply`
+        SET
+            `id` = #{id},
+            `nickName`= #{nickName},
+            `userPic` = #{userPic},
+            `openId` = #{openId},
+            `userName` = #{userName},
+            `sex` = #{sex},
+            `identityNum` = #{identityNum},
+            `phone` = #{phone},
+            `email` = #{email},
+            `money` = #{money},
+            `firstLoginTime` = #{firstLoginTime},
+            `lastLoginTime` = #{lastLoginTime},
+            `loginNum` = #{loginNum},
+            `createTime` = #{createTime},
+            `updateTime` = #{updateTime}
+        WHERE `id` = #{id}
+    </update>
+</mapper>

@@ -2,11 +2,14 @@ package com.upin.entity.wxuser;
 
 import java.util.Date;
 
+import org.apache.ibatis.type.Alias;
+
 /**
  * 微信用户表-实体类
  * @author Administrator
  *
  */
+@Alias("WXUser")
 public class WXUser {
 	/**
 	 * 用户编号
@@ -61,8 +64,8 @@ public class WXUser {
 	 */
 	private String loginNum;
 	
-	private String createTime;
-	private String updateTime;
+	private Date createTime;
+	private Date updateTime;
 	public String getId() {
 		return id;
 	}
@@ -141,16 +144,16 @@ public class WXUser {
 	public void setLoginNum(String loginNum) {
 		this.loginNum = loginNum;
 	}
-	public String getCreateTime() {
+	public Date getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	public String getUpdateTime() {
+	public Date getUpdateTime() {
 		return updateTime;
 	}
-	public void setUpdateTime(String updateTime) {
+	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
 	
