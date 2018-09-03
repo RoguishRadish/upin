@@ -1,10 +1,13 @@
 package com.upin.entity.banner;
 
+import org.apache.ibatis.type.Alias;
+
 /**
  * 轮播图
  * @author Administrator
  *
  */
+@Alias("Banner")
 public class Banner {
 	/**
 	 * 编号=goods.id

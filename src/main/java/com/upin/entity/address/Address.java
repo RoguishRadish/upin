@@ -1,5 +1,9 @@
 package com.upin.entity.address;
 
+import java.util.Date;
+
+import org.apache.ibatis.type.Alias;
+@Alias("Address")
 public class Address {
 	private String id;
 	private String userId;
@@ -7,8 +11,8 @@ public class Address {
 	private String phone;
 	private String address;
 	private String isone;
-	private String createTime;
-	private String updateTime;
+	private Date createTime;
+	private Date updateTime;
 	public String getId() {
 		return id;
 	}
@@ -45,16 +49,16 @@ public class Address {
 	public void setIsone(String isone) {
 		this.isone = isone;
 	}
-	public String getCreateTime() {
+	public Date getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	public String getUpdateTime() {
+	public Date getUpdateTime() {
 		return updateTime;
 	}
-	public void setUpdateTime(String updateTime) {
+	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
 }

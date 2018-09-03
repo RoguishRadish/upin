@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.upin.dao.bill.BillDao">
-	<resultMap id="base" type="Bill" ></resultMap>
+<mapper namespace="com.upin.dao.address.AddressDao">
+	<resultMap id="base" type="Address" ></resultMap>
 
 	<!-- 新增 -->	
 	<insert id="insert" parameterType="base">
@@ -203,7 +203,7 @@
    			</if>
 	</select>
 
-	<!-- 更新账单 -->
+	<!-- 更新 -->
 	<update id="update" parameterType="base">
 	    update 
 	    	bill

@@ -2,11 +2,14 @@ package com.upin.entity.goods;
 
 import java.util.List;
 
+import org.apache.ibatis.type.Alias;
+
 /**
  * 商品表-实体类
  * @author Administrator
  *
  */
+@Alias("Goods")
 public class Goods {
 	/**
 	 * 编号

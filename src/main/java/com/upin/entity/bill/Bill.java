@@ -1,10 +1,13 @@
 package com.upin.entity.bill;
 
+import org.apache.ibatis.type.Alias;
+
 /**
  * 账单表
  * @author Administrator
  *
  */
+@Alias("Bill")
 public class Bill {
 	//账单编号
 	private String id;

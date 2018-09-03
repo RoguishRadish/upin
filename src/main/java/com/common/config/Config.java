@@ -7,7 +7,7 @@ public class Config {
 	//系统编码  
     public static final String CHARSET = "UTF-8";  
     //系统配置文件的路径  
-    public static final String CONFIG_PATH = "/Config.properties";  
+    public static final String CONFIG_PATH = "/config.properties";  
 	
     //********************************************************************//
 	private static Properties config = new Properties();  

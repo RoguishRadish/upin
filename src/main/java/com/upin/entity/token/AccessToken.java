@@ -1,10 +1,13 @@
 package com.upin.entity.token;
 
+import org.apache.ibatis.type.Alias;
+
 /**
  * access_token
  * @author Administrator
  *
  */
+@Alias("AccessToken")
 public class AccessToken {
 	//编号
 	private String id;

@@ -1,5 +1,8 @@
 package com.upin.entity.order;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("Order")
 public class Order {
 	private String id;
 	private String userId;

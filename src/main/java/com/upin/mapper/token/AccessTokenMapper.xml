@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mapper.token.AccessTokenMapper">
-	<resultMap id="BaseResult" type="com.entity.token.AccessToken" >
-		<id column="Id" property="id" jdbcType="VARCHAR" />
-		<result column="TOKEN" property="token" jdbcType="VARCHAR" />
-		<result column="LAST_TIME" property="lastTime" jdbcType="VARCHAR" />
-		<result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR" />
-	</resultMap>
+<mapper namespace="com.upin.dao.token.AccessTokenDao">
+	<resultMap id="base" type="AccessToken" ></resultMap>
 
 	<!-- 新增 -->	
-	<insert id="insert" parameterType="com.entity.token.AccessToken">
+	<insert id="insert" parameterType="base">
 		insert into wx_access_token (
 			Id,
 			TOKEN,
@@ -25,7 +20,7 @@
 	</insert>
 	
 	<!-- 查询 -->
-	<select id="getOne" parameterType="BaseResult" resultType="com.entity.token.AccessToken">
+	<select id="getOne" parameterType="base" resultType="AccessToken">
 		SELECT
 			Id,
 			TOKEN,
@@ -36,7 +31,7 @@
 	</select>
 	
 	<!-- 更新 -->
-	<update id="update" parameterType="com.entity.token.AccessToken">
+	<update id="update" parameterType="AccessToken">
 	    update 
 	    	wx_access_token
 	    <set>
